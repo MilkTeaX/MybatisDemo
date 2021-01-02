@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <properties resource="jdbc.properties"/>
+
+    <!-- 是否开启驼峰命名规范 -->
+<!--    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>-->
+
+    <!-- 定义别名之后可以直接使用别名定义，不在区分大小写 -->
+    <typeAliases>
+        <typeAlias type="com.tzx.entity.User" alias="user"/>
+        <typeAlias type="com.tzx.entity.Article" alias="article"/>
+    </typeAliases>
+
+    <environments default="mysql">
+        <environment id="mysql">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${prop.driverClass}"/>
+                <property name="url" value="${prop.url}"/>
+                <property name="username" value="${prop.username}"/>
+                <property name="password" value="${prop.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="com/tzx/entity/UserMapper.xml"/>
+        <mapper resource="com//tzx/entity/ArticleMapper.xml"/>
+        <!--<mapper class="com.tzx.dao.UserDao"/>-->
+    </mappers>
+
+</configuration>

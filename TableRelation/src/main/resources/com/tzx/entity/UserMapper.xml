@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tzx.dao.UserDao">
+    <!--
+        配置实体类和数据库字段对应
+        当实体类和数据库字段不对应时可通过这种配置（或者查询时使用 as）
+        配置了此参数后查询的返回值要使用resultMap
+     -->
+    <resultMap id="myResultMap" type="user">
+        <!-- 主键对应字段 -->
+        <id property="userId" column="user_id"/>
+        <!-- 非主键对应字段 -->
+        <result property="userName" column="user_name"/>
+        <result property="userPassword" column="user_password"/>
+        <result property="userEmail" column="user_email"/>
+        <collection property="articles" ofType="article">
+            <id property="articleId" column="article_id"/>
+            <result property="articleName" column="article_name"/>
+            <result property="articleCreateTime" column="article_create_time"/>
+            <result property="userId" column="user_id"/>
+        </collection>
+    </resultMap>
+
+    <select id="findAllUser" resultMap="myResultMap">
+        select * from user LEFT JOIN article on user.user_id=article.user_id
+    </select>
+
+  </mapper>
