@@ -1,6 +1,5 @@
 package com.tzx.dao.impl;
 
-import com.mysql.cj.xdevapi.SessionFactory;
 import com.tzx.dao.UserDao;
 import com.tzx.entity.User;
 import org.apache.ibatis.session.SqlSession;
@@ -47,6 +46,14 @@ public class UserDaoImpl implements UserDao {
     }
 
     public List<User> finOneUserByLike(String username) {
+        return null;
+    }
+
+    public List<User> findOneUserByWhere(User user) {
+        return null;
+    }
+
+    public List<User> finUserByIn(List<Integer> userIds) {
         return null;
     }
 }

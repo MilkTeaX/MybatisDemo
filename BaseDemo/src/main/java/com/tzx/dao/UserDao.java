@@ -1,7 +1,6 @@
 package com.tzx.dao;
 
 import com.tzx.entity.User;
-import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -51,4 +50,18 @@ public interface UserDao {
      * @return
      */
     List<User> finOneUserByLike(String username);
+
+    /**
+     * 条件查找
+     * @param user
+     * @return
+     */
+    List<User> findOneUserByWhere(User user);
+
+    /**
+     * 子查询
+     * @param userIds
+     * @return
+     */
+    List<User> finUserByIn(List<Integer> userIds);
 }

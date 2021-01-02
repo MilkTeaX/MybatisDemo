@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tzx.dao.UserDao">
+    <!--
+        配置实体类和数据库字段对应
+        当实体类和数据库字段不对应时可通过这种配置（或者查询时使用 as）
+        配置了此参数后查询的返回值要使用resultMap
+     -->
+    <resultMap id="myResultMap" type="user">
+            <!-- 主键对应字段 -->
+            <id property="userId" column="user_id"/>
+            <!-- 非主键对应字段 -->
+            <result property="userName" column="user_name"/>
+            <result property="userPassword" column="user_password"/>
+            <result property="userEmail" column="user_email"/>
+    </resultMap>
+
+    <select id="findAllUser" resultMap="myResultMap">
+        select * from user
+    </select>
+
+    <insert id="saveUser" parameterType="user">
+        <!-- keyProperty表示返回值名称 order表示在之前还是之后执行 resultType表示返回值累心 -->
+        <selectKey keyProperty="userid" resultType="Integer" keyColumn="userId">
+            select last_insert_id();
+        </selectKey>
+        insert into user(user_name,user_password,user_email)values(#{userName},#{userPassword},#{userEmail})
+    </insert>
+
+    <update id="updateUser" parameterType="user">
+        update user set username=#{userName} where userid=#{userId}
+    </update>
+
+    <delete id="deleteUser" parameterType="user">
+        delete from user where user_id=#{userId}
+    </delete>
+
+    <select id="findOneUser" resultMap="myResultMap" parameterType="Integer">
+        select username from user where user_id=#{uid}
+    </select>
+
+    <!--<select id="finOneUserByLike" resultType="user" parameterType="String">
+        select * from user where username like #{username}
+        &lt;!&ndash;
+            此种方法是使用Statement直接拼接字符串得到语句 ，不建议使用
+          select * from user where username like '%${value}%'
+          &ndash;&gt;
+      </select>-->
+    
+    <select id="findOneUserByWhere" resultType="user" parameterType="user">
+        select * from user where 1 = 1
+        <if test="userName != null">
+            and user_name like #{userName}
+        </if>
+        <if test="userEmail != null">
+            and user_email like #{userEmail}
+        </if>
+    </select>
+
+    <select id="finUserByIn" resultMap="myResultMap" parameterType="List">
+        select * from user
+        <where>
+            <if test="list != null and list.size()>0">
+                <foreach collection="list" open="and user_id in (" close=")" item="userId" separator=",">
+                    #{userId}
+                </foreach>
+            </if>
+        </where>
+    </select>
+    
+  </mapper>

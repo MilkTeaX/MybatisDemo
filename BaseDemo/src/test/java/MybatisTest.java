@@ -4,10 +4,13 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -54,7 +57,8 @@ public class MybatisTest {
         for (User user: userList) {
             System.out.println(user);
         }
-        /*UserDao userDao = new UserDaoImpl(sqlSessionFactory);
+        /*
+        UserDao userDao = new UserDaoImpl(sqlSessionFactory);
         List<User> userList = userDao.findAllUser();
         for (User user: userList) {
             System.out.println(user);
@@ -65,25 +69,25 @@ public class MybatisTest {
     public void saveUser(){
         User user = new User();
         //user.setUserid(4);
-        user.setUsername("test");
-        user.setUserpassword("789");
-        user.setUseremail("zhongx.tang@sunyard.com");
+        user.setUserName("test");
+        user.setUserPassword("789");
+        user.setUserEmail("zhongx.tang@sunyard.com");
         userDao.saveUser(user);
-        System.out.println(user.getUserid());
+        System.out.println(user.getUserId());
     }
 
     @Test
     public void updateUser(){
         User user = new User();
-        user.setUserid(3);
-        user.setUsername("TestUser");
+        user.setUserId(3);
+        user.setUserName("TestUser");
         userDao.updateUser(user);
     }
 
     @Test
     public void deleteUser(){
         User user = new User();
-        user.setUserid(17);
+        user.setUserId(17);
         userDao.deleteUser(user);
     }
 
@@ -95,9 +99,31 @@ public class MybatisTest {
     @Test
     public void findOneUserByLike(){
         User users = new User();
-        users.setUsername("%es%");
-        List<User> userList = userDao.finOneUserByLike(users.getUsername());
+        users.setUserName("%es%");
+        List<User> userList = userDao.finOneUserByLike(users.getUserName());
         for (User user: userList) {
+            System.out.println(user);
+        }
+    }
+
+    @Test
+    public void findOneUserByWhere(){
+        User user = new User();
+        user.setUserName("%test%");
+        user.setUserEmail("%@%");
+        List<User> userList = userDao.findOneUserByWhere(user);
+        for (User users: userList) {
+            System.out.println(users);
+        }
+    }
+
+    @Test
+    public void finUserByIn(){
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(2);
+        List<User> listUser = userDao.finUserByIn(list);
+        for (User user:listUser) {
             System.out.println(user);
         }
     }
